@@ -3,9 +3,9 @@
 #include <cstdlib>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-/* generating a randomized shape with numPoints vertices, centered on mouseClickPosition 
-mapped to the Cartesian plane, which is centered at (0,0) - give the particle initial 
-vertical, horizontal, and angular / spin velocities */
+/* generating a randomized shape with numPoints vertices, centered on 
+mouseClickPosition mapped to the Cartesian plane, which is centered at (0,0) 
+- give the particle initial vertical, horizontal, and angular / spin velocities */
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
 {
   
