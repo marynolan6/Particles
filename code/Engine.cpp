@@ -8,7 +8,7 @@ Engine::Engine()
     VideoMode customMode(800, 600); // custom resolution
     m_Window.create(customMode, "Your Game Title");}
 
-// run()
+// run() clock - window
 void Engine::run()
 {
     // initialize the clock to track time frame
@@ -40,7 +40,7 @@ void Engine::run()
     }
 }
 
-// input()
+// input() - handles user input
 void Engine::input()
 {
     // poll the Windows event queue
