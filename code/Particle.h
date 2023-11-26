@@ -17,6 +17,7 @@ public:
 	virtual void draw(RenderTarget& target, RenderStates states) const override;
 	void update(float dt);
 	float getTTL() { return m_ttl; }
+	
 	//Functions for unit testing
 	bool almostEqual(double a, double b, double eps = 0.0001);
 	void unitTests();
