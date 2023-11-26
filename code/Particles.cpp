@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+//Not sure about line 32
+
 /* generating a randomized shape with numPoints vertices, centered on 
 mouseClickPosition mapped to the Cartesian plane, which is centered at (0,0) 
 - give the particle initial vertical, horizontal, and angular / spin velocities */
@@ -27,7 +29,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
   m_cartesianPlane.setSize(target.getSize().x , (-1.0) * target.getSize().y);
 
   //Store the location of the center of this particle on the Cartesian plane in m_centerCoordinate
-  m_centerCoordinate = m_cartesianPlane.mapPixelToCoords(mouseClickPosition);
+  m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition);
 
   //Assign m_vx and m_vy to random pixel velocities
   m_vx = rand() % 401 + 100;
@@ -75,7 +77,33 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 // overrides the virtual function from sf::Drawable to allow our draw function to polymorph
 void Particle::draw(RenderTarget& target, RenderStates states) const 
 {
-  
+  //Construct a VertexArray named lines
+  sf::VertexArray lines(TriangleFan, m_numPoints + 1);
+
+  //Declare a local vector2f named center
+  Vector2f center(target.mapCoordsToPixel(m_centerCoordinate));
+
+  //Assign lines[0].position with center
+  lines[0].position = center;
+
+  //Assign lines[0].color with m_color
+  //On canvas it doesn't specify m_color1 or m_color2 so I just chose 1 bc I wasn't sure
+  lines[0].color = m_color1;
+
+  //Loop j from 1 up to and including m_numPoints
+  for (int j = 1; j <= m_numPoints; j++)
+  {
+    //Assign lines[j].position with the coordinate from column j - 1 in m_A, 
+    //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
+
+    //Not sure
+    
+    //Assign lines[j].color with m_color2
+    lines[j].color = m_color2;
+  }
+
+  //When loop is finished draw the Vertex array
+  target.draw(lines);
 }
 
 // updating the state of the particle
