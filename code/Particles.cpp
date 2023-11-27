@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+
 /* generating a randomized shape with numPoints vertices, centered on 
 mouseClickPosition mapped to the Cartesian plane, which is centered at (0,0) 
 - give the particle initial vertical, horizontal, and angular / spin velocities */
@@ -11,6 +12,7 @@ bool Particle::almostEqual(double a, double b, double eps)
 {
     return fabs(a - b) < eps;
 }
+
 void Particle::unitTests()
 {
     int score = 0;
@@ -83,8 +85,8 @@ void Particle::unitTests()
             j), initialCoords(0, j)))
         {
             cout << "Failed mapping: ";
-            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")
-                ==> (" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
+            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")"
+            << "(" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
                 rotationPassed = false;
         }
     }
@@ -107,8 +109,8 @@ void Particle::unitTests()
             almostEqual(m_A(1, j), 0.5 * initialCoords(1, j)))
         {
             cout << "Failed mapping: ";
-            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")
-                ==> (" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
+            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")"
+                << "(" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
                 scalePassed = false;
         }
     }
@@ -131,8 +133,8 @@ void Particle::unitTests()
             almostEqual(m_A(1, j), 5 + initialCoords(1, j)))
         {
             cout << "Failed mapping: ";
-            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")
-                ==> (" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
+            cout << "(" << initialCoords(0, j) << ", " << initialCoords(1, j) << ")"
+                << "(" << m_A(0, j) << ", " << m_A(1, j) << ")" << endl;
                 translatePassed = false;
         }
     }
@@ -147,6 +149,10 @@ void Particle::unitTests()
     }
     cout << "Score: " << score << " / 7" << endl;
 }
+
+//Construct m_A before Particle constructor
+//m_A(2,m_numPoints);
+
 
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
 {
@@ -275,7 +281,7 @@ void Particle::update(float dt)
 void Particle::translate(double xShift, double yShift)
 {
     // Construct a TranslationMatrix T with the specified shift values xShift and yShift
-    TranslationMatrix T(xShift, yShift);
+    TranslationMatrix T(xShift, yShift, m_A.getCols());
 
     // Add it to m_A as m_A = T + m_A
     m_A = T + m_A;
@@ -313,7 +319,11 @@ void Particle::scale(double c)
   Vector2f temp = m_centerCoordinate;
 
   // Call translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
-  translate(-temp.x, -temp.y);
+  //translate(-temp.x, -temp.y);
+  translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+
+  //Construct a ScalingMatrix S with the specified scaling multiplier c
+  ScalingMatrix S(c);
 
   // Multiply it by m_A as m_A = S * m_A
   m_A = S * m_A;
@@ -321,7 +331,7 @@ void Particle::scale(double c)
   // Shift our particle back to its original center
   translate(temp.x, temp.y);
 }
-
+/*
 // if 2 double-precision floating-point numbers are ~equal
 bool Particle::almostEqual(double a, double b, double eps) 
 {
@@ -332,4 +342,4 @@ bool Particle::almostEqual(double a, double b, double eps)
 void Particle::unitTests() 
 {
   
-}
+}*/
