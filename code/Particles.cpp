@@ -3,8 +3,6 @@
 #include <cstdlib>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-//Not sure about line 32
-
 /* generating a randomized shape with numPoints vertices, centered on 
 mouseClickPosition mapped to the Cartesian plane, which is centered at (0,0) 
 - give the particle initial vertical, horizontal, and angular / spin velocities */
@@ -96,7 +94,8 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     //Assign lines[j].position with the coordinate from column j - 1 in m_A, 
     //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
 
-    //Not sure
+    Vector2f coord = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)));
+    lines[j].position = coord;
     
     //Assign lines[j].color with m_color2
     lines[j].color = m_color2;
@@ -107,27 +106,81 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 }
 
 // updating the state of the particle
-void Particle::update(float dt) 
+void Particle::update(float dt)
 {
-  
+    // Subtract dt from m_ttl
+    m_ttl -= dt;
+
+    // Call rotate with an angle of dt * m_radiansPerSec
+    rotate(dt * m_radiansPerSec);
+
+    // Call scale using the global constant SCALE
+    scale(SCALE);
+
+    // Calculate how far to shift/translate our particle using velocity (dx, dy)
+    float dx = m_vx * dt;
+
+    // Change vertical velocity due to gravity
+    // Adjust the value of G as needed
+    float G = 1000.0; // Adjust this value experimentally
+    m_vy -= G * dt;
+
+    // Assign m_vy * dt to dy
+    float dy = m_vy * dt;
+
+    // Call translate using dx, dy as arguments
+    translate(dx, dy);
 }
 
-// rotation transformation to the particle's matrix of coordinates - specified by theta in radians
-void Particle::rotate(double theta) 
+// translation transformation to the particle's matrix of coordinates - moves horizonal/vertical
+void Particle::translate(double xShift, double yShift)
 {
-  
+    // Construct a TranslationMatrix T with the specified shift values xShift and yShift
+    TranslationMatrix T(xShift, yShift);
+
+    // Add it to m_A as m_A = T + m_A
+    m_A = T + m_A;
+    
+    // Update the particle's center coordinate
+    m_centerCoordinate.x += xShift;
+    m_centerCoordinate.y += yShift;
+}
+
+// rotation matrix we will use is algebraically derived to rotate coordinates about the origin
+// temporarily shift our particle to the origin before rotating it
+void Particle::rotate(double theta)
+{
+    // Store the value of m_centerCoordinate in a Vector2f temp
+    Vector2f temp = m_centerCoordinate;
+
+    // Call translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+    translate(-temp.x, -temp.y);
+
+    // Construct a RotationMatrix R with the specified angle of rotation theta
+    RotationMatrix R(theta);
+
+    // Multiply it by m_A as m_A = R * m_A
+    m_A = R * m_A;
+
+    // Shift our particle back to its original center
+    translate(temp.x, temp.y);
 }
 
 // scaling transformation to the particle's matrix of coordinates
 void Particle::scale(double c) 
 {
-  
-}
+  // temporarily shift back to the origin here before scaling:
+  // Store the value of m_centerCoordinate in a Vector2f temp
+  Vector2f temp = m_centerCoordinate;
 
-// translation transformation to the particle's matrix of coordinates - moves horizonal/vertical
-void Particle::translate(double xShift, double yShift) 
-{
-  
+  // Call translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+  translate(-temp.x, -temp.y);
+
+  // Multiply it by m_A as m_A = S * m_A
+  m_A = S * m_A;
+
+  // Shift our particle back to its original center
+  translate(temp.x, temp.y);
 }
 
 // if 2 double-precision floating-point numbers are ~equal
