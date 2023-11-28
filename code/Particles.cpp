@@ -225,7 +225,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
   sf::VertexArray lines(TriangleFan, m_numPoints + 1);
 
   //Declare a local vector2f named center
-  Vector2f center(target.mapCoordsToPixel(m_centerCoordinate));
+  Vector2f center = (Vector2f)target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
 
   //Assign lines[0].position with center
   lines[0].position = center;
@@ -239,17 +239,19 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
   {
     //Assign lines[j].position with the coordinate from column j - 1 in m_A, 
     //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
-
-    Vector2f point;
-    point.x = m_A.getRows();
-    point.y = m_A.getCols() - 1;
-
-
-    Vector2i coord = target.mapCoordsToPixel(point, target.getView());
+    /*Vector2f point;
+    point.x = m_A(0, j - 1);
+    point.y = m_A(1, j - 1);
+    
+    Vector2i coord = target.mapCoordsToPixel(point);
     Vector2f temp;
     temp.x = coord.x;
-    temp.y = coord.y;
-    lines[j].position = temp;
+    temp.y = coord.y; */
+    
+    Vector2f coord = (Vector2f)target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j-1)), m_cartesianPlane);
+    
+    //lines[j].position = temp;
+    lines[j].position = coord;
 
     
     //Assign lines[j].color with m_color2

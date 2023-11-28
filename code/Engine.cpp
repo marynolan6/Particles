@@ -5,7 +5,7 @@
 Engine::Engine()
 {
     // create a RenderWindow
-    VideoMode customMode(800, 600); // custom resolution
+    VideoMode customMode(1600, 1200); // custom resolution
     m_Window.create(customMode, "Your Game Title");}
 
 // run() clock - window
