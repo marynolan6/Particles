@@ -173,7 +173,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
   m_cartesianPlane.setSize(target.getSize().x , (-1.0) * target.getSize().y);
 
   //Store the location of the center of this particle on the Cartesian plane in m_centerCoordinate
-  m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition);
+  m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
 
   //Assign m_vx and m_vy to random pixel velocities
   m_vx = rand() % 401 + 100;
@@ -240,8 +240,17 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     //Assign lines[j].position with the coordinate from column j - 1 in m_A, 
     //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
 
-    Vector2f coord = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)));
-    lines[j].position = coord;
+    Vector2f point;
+    point.x = m_A.getRows();
+    point.y = m_A.getCols() - 1;
+
+
+    Vector2i coord = target.mapCoordsToPixel(point, target.getView());
+    Vector2f temp;
+    temp.x = coord.x;
+    temp.y = coord.y;
+    lines[j].position = temp;
+
     
     //Assign lines[j].color with m_color2
     lines[j].color = m_color2;
