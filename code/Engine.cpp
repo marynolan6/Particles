@@ -6,7 +6,7 @@ Engine::Engine()
 {
     // create a RenderWindow
     VideoMode customMode(1600, 1200); // custom resolution
-    m_Window.create(customMode, "Your Game Title");}
+    m_Window.create(customMode, "Particles");}
 
 // run() clock - window
 void Engine::run()
