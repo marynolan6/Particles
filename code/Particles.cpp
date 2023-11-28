@@ -241,8 +241,8 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
 
     Vector2f point;
-    point.x = m_A.getRows();
-    point.y = m_A.getCols() - 1;
+    point.x = m_A(1, j - 1);
+    point.y = m_A(1, j - 1);
 
 
     Vector2i coord = target.mapCoordsToPixel(point, target.getView());
