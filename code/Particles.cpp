@@ -332,15 +332,3 @@ void Particle::scale(double c)
   // Shift our particle back to its original center
   translate(temp.x, temp.y);
 }
-/*
-// if 2 double-precision floating-point numbers are ~equal
-bool Particle::almostEqual(double a, double b, double eps) 
-{
-  
-}
-
-// rotations, scaling, and translations
-void Particle::unitTests() 
-{
-  
-}*/
