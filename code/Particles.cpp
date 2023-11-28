@@ -177,7 +177,15 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 
   //Assign m_vx and m_vy to random pixel velocities
   m_vx = rand() % 401 + 100;
+
+  int random1 = rand() % 2;
+  if (random1 != 0)
+  {
+    m_vx*=-1;
+  }
+
   m_vy = rand() % 401 + 100;
+
 
   //Assign m_color1 and m_color2 with Colors, red and blue, we can change later
     m_color1.r = 255;
