@@ -180,13 +180,13 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
   m_vy = rand() % 401 + 100;
 
   //Assign m_color1 and m_color2 with Colors, red and blue, we can change later
-  m_color1.r = 255;
-  m_color1.g = 0;
-  m_color1.b = 0;
+    m_color1.r = 255;
+    m_color1.g = 255;
+    m_color1.b = 255;
 
-  m_color2.r = 43;
-  m_color2.g = 0;
-  m_color2.b = 255;
+    m_color2.r = 46;
+    m_color2.g = 149;
+    m_color2.b = 245;
 
   //Generate numPoint vertices by sweeping a circular arc with randomized radii
   //Initialize theta to an angle between {0:PI/2}
