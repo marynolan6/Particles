@@ -155,6 +155,7 @@ void Particle::unitTests()
 
 
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
+    : m_A(2, numPoints) // initialize m_A with the chosen size
 {
   //Initialize m_ttl with global constant TTL;
   m_ttl = TTL;
