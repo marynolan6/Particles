@@ -196,6 +196,14 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_color2.g = 149;
     m_color2.b = 245;
 
+    m_color3.r = 21;
+    m_color3.g = 255;
+    m_color3.b = 0;
+
+    m_color4.r = 162;
+    m_color4.g = 0;
+    m_color4.b = 255;
+
   //Generate numPoint vertices by sweeping a circular arc with randomized radii
   //Initialize theta to an angle between {0:PI/2}
   float theta = ((float) rand() / (RAND_MAX)) * (M_PI/2);
@@ -245,17 +253,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
   //Loop j from 1 up to and including m_numPoints
   for (int j = 1; j <= m_numPoints; j++)
   {
-    //Assign lines[j].position with the coordinate from column j - 1 in m_A, 
-    //mapped from Cartesian to pixel coordinates using mapCoordsToPixel
-    /*Vector2f point;
-    point.x = m_A_A(0, j - 1);
-    point.y = m_A(1, j - 1);
-    
-    Vector2i coord = target.mapCoordsToPixel(point);
-    Vector2f temp;
-    temp.x = coord.x;
-    temp.y = coord.y; */
-    
+    int random1 = rand() % 3;
     Vector2f coord = (Vector2f)target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j-1)), m_cartesianPlane);
     
     //lines[j].position = temp;
@@ -263,7 +261,19 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 
     
     //Assign lines[j].color with m_color2
-    lines[j].color = m_color2;
+    //lines[j].color = m_color2;
+    if (random1 == 0)
+    {
+        lines[j].color = m_color2;
+    }
+    else if (random1 == 1)
+    {
+        lines[j].color = m_color3;
+    }
+    else
+    {
+        lines[j].color = m_color4;
+    }
   }
 
   //When loop is finished draw the Vertex array
